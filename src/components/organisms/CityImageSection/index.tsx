@@ -26,12 +26,12 @@ const CityImageSection = ({ onClickHandler, activeCity }: Props) => {
 
   return (
     <>
-      <div className="xs:invisible lg:visible container mx-auto lg:w-4/6 px-12 pb-12">
+      <div className="container mx-auto flex justify-start lg:w-4/6 px-12 pb-12">
         <Heading size="md">{data?.page.officesTitle}</Heading>
       </div>
       <div className="container lg:w-5/6 mx-auto bg-white relative rounded-sm px-12 pb-12">
         <div className="w-full flex flex-col ">
-          <div className="flex xs:flex-col lg:flex-row justify-around items-center">
+          <div className="flex flex-col md:flex-row justify-around items-center">
             {renderCities()}
           </div>
         </div>

@@ -18,7 +18,7 @@ const OfficeImage = ({
 
   return (
     <div
-      className={`rounded-md relative mx-4 cursor-pointer w-3/6 ${
+      className={`rounded-md relative mx-4 mb-4 cursor-pointer md:w-3/6 ${
         active ? 'ring-4 ring-indigo-400 ring-opacity-50' : ''
       }`}
       onClick={() => onClickHandler(cityId)}
