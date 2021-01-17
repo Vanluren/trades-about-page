@@ -17,12 +17,14 @@ type State = {
     page: Page;
   } | null;
   error: Error | null;
+  cityQuery?: (c: string) => void;
 };
 
 const initialState: State = {
   isLoading: false,
   data: null,
   error: null,
+  cityQuery: undefined,
 };
 
 export const DataContext = createContext(initialState);
@@ -32,6 +34,7 @@ DataContext.displayName = 'DataContext';
 const request = () => createAction('request');
 const success = (data: any) => createAction('success', normalizeEntries(data));
 const error = (error: Error) => createAction('error', error);
+const updatePeople = (data: any) => createAction('error', data);
 
 const reducer = (state: State, action: Action) => {
   switch (action.type) {
@@ -50,6 +53,14 @@ const reducer = (state: State, action: Action) => {
         isLoading: false,
         data: action.payload,
       };
+    case 'update people':
+      return {
+        ...state,
+        data: {
+          ...state.data,
+          people: action.payload,
+        },
+      };
 
     default:
       return state;
@@ -58,6 +69,7 @@ const reducer = (state: State, action: Action) => {
 
 const DataProvider = ({ children }: ProviderProps) => {
   const [state, dispatch] = useReducer(reducer, initialState);
+
   useEffect(() => {
     dispatch(request());
     Api.get(URL_STRINGS.ENTITIES)

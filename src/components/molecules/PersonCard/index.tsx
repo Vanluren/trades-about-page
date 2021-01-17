@@ -29,7 +29,7 @@ const PersonCard = ({ person }: Props) => {
       <p className="text-base" dangerouslySetInnerHTML={{ __html: bio }}></p>
       <div
         role="button"
-        className="text-blue-500"
+        className="text-indigo-500"
         onClick={() => setShowAll(!showAll)}
       >
         {showAll ? 'Show Less' : 'Show More'}

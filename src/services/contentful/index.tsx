@@ -9,9 +9,9 @@ export const normalizeEntries = (entries: any) => {
 
   entries.items.forEach((e: any) => {
     if (e.fields.biography) {
-      people.push(e.fields);
+      people.push({ ...e?.fields, id: e.sys.id });
     } else if (e.fields.officeTeamMembersTitle) {
-      city.push(e.fields);
+      city.push({ ...e?.fields, id: e.sys.id });
     } else if (e.fields.title) {
       page = e.fields;
     }
