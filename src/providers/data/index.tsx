@@ -1,40 +1,53 @@
 import React, { useEffect, createContext, useReducer, ReactNode } from 'react';
+import Api from 'services/api';
+import { normalizeEntries } from 'services/contentful';
+import { City, Person, Page, Error, Action } from 'types';
 import { createAction } from 'utils/createAction';
+import { URL_STRINGS } from 'utils/url-contstants';
 
 type ProviderProps = {
   children: ReactNode;
 };
 type State = {
   isLoading: boolean;
-  data: boolean | null;
-};
-type Action = {
-  type: string;
-  payload?: any;
-  meta?: any;
+  data: {
+    city: City[];
+    people: Person[];
+    page: Page;
+  } | null;
+  error: Error | null;
 };
 
 const initialState: State = {
   isLoading: false,
   data: null,
+  error: null,
 };
 
-const DataContext = createContext(initialState);
+export const DataContext = createContext(initialState);
 
 DataContext.displayName = 'DataContext';
 
 const request = () => createAction('request');
-const success = (data: { hello: boolean }) => createAction('success', data);
+const success = (data: any) => createAction('success', normalizeEntries(data));
+const error = (error: Error) => createAction('error', error);
 
 const reducer = (state: State, action: Action) => {
   switch (action.type) {
     case 'request':
       return { ...state, isLoading: true };
+    case 'error':
+      return {
+        ...state,
+        isLoading: false,
+        error: action.payload,
+        data: null,
+      };
     case 'success':
       return {
         ...state,
         isLoading: false,
-        data: true,
+        data: action.payload,
       };
 
     default:
@@ -45,11 +58,21 @@ const reducer = (state: State, action: Action) => {
 const DataProvider = ({ children }: ProviderProps) => {
   const [state, dispatch] = useReducer(reducer, initialState);
   useEffect(() => {
-    if (state.data === null) {
-      dispatch(request());
-      dispatch(success({ hello: true }));
-    }
-  });
+    dispatch(request());
+    Api.get(URL_STRINGS.ENTITIES)
+      .then((res) => dispatch(success(res.data)))
+      .catch((errorResponse: any) => {
+        if (errorResponse.response) {
+          return dispatch(
+            error({
+              message: errorResponse.response,
+              status: errorResponse.response.status,
+            })
+          );
+        }
+        dispatch(error({ message: errorResponse.message }));
+      });
+  }, []);
 
   return <DataContext.Provider value={state}>{children}</DataContext.Provider>;
 };
