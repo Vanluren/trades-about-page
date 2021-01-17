@@ -7,7 +7,7 @@ export type Page = {
       id: string;
     };
   };
-  content: string;
+  content: any;
   officesTitle: string;
   offices: City[];
   allTeamMembersTitle: string;

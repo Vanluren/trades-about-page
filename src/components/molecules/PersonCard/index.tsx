@@ -1,14 +1,22 @@
-import React from 'react';
+import React, { useMemo, useState } from 'react';
 import { Person } from 'types';
 import Mugshot from 'components/atoms/Mugshot';
 import styled from 'styled-components';
-import { documentToReactComponents } from '@contentful/rich-text-react-renderer';
+import { documentToHtmlString } from '@contentful/rich-text-html-renderer';
+import { truncateString } from 'utils/truncateString';
 
 type Props = {
   person: Person;
 };
 
 const PersonCard = ({ person }: Props) => {
+  const [showAll, setShowAll] = useState<boolean>(false);
+  const bio = useMemo(() => {
+    if (showAll) return documentToHtmlString(person.biography);
+
+    return truncateString(documentToHtmlString(person.biography), 250);
+  }, [person, showAll]);
+
   return (
     <Wrapper className=" bg-gray-100 flex flex-col px-4 py-6 mb-4 ">
       <div className="flex flex-row pb-6">
@@ -18,12 +26,14 @@ const PersonCard = ({ person }: Props) => {
           <p className="text-xl text-gray-500">{person.title}</p>
         </div>
       </div>
-      <p className="text-base">
-        {documentToReactComponents(person.biography)}
-        <a href="/" className="text-blue-500 capitalize pl-2">
-          Show more
-        </a>
-      </p>
+      <p className="text-base" dangerouslySetInnerHTML={{ __html: bio }}></p>
+      <div
+        role="button"
+        className="text-blue-500"
+        onClick={() => setShowAll(!showAll)}
+      >
+        {showAll ? 'Show Less' : 'Show More'}
+      </div>
     </Wrapper>
   );
 };
