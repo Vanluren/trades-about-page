@@ -34,7 +34,6 @@ DataContext.displayName = 'DataContext';
 const request = () => createAction('request');
 const success = (data: any) => createAction('success', normalizeEntries(data));
 const error = (error: Error) => createAction('error', error);
-const updatePeople = (data: any) => createAction('error', data);
 
 const reducer = (state: State, action: Action) => {
   switch (action.type) {

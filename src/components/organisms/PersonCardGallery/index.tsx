@@ -11,7 +11,6 @@ const PersonCardGallery = ({ activeCity }: Props): ReactElement => {
 
   const renderTitle = useCallback(() => {
     if (activeCity) {
-      console.log(data?.city.find((c) => c.id === activeCity));
       return data?.city.find((c) => c.id === activeCity)
         ?.officeTeamMembersTitle;
     }

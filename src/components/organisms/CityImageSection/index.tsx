@@ -1,7 +1,6 @@
-import React, { useCallback, useContext } from 'react';
+import React, { useContext } from 'react';
 import OfficeImage from 'components/molecules/OfficeImage';
 import Heading from 'components/atoms/Heading';
-import { City } from 'types';
 import { DataContext } from 'providers/data';
 
 type Props = {
