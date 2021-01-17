@@ -1,23 +1,22 @@
-import React, { useMemo } from 'react';
+import React, { useMemo, useContext } from 'react';
 import styled from 'styled-components';
+import { DataContext } from 'providers/data';
 
 type Props = {
-  imageSrc: string;
-  imageInfo?: {
-    alt: string;
-  };
+  imageId: string;
 };
+const HeroImage = ({ imageId }: Props) => {
+  const { data } = useContext(DataContext);
 
-const HeroImage = ({ imageSrc, imageInfo }: Props) => {
   const image = useMemo(
     () => (
       <Image
         className="object-cover w-full h-96"
-        src={imageSrc}
-        alt={imageInfo?.alt ?? 'Image'}
+        src={data?.assets[imageId].file.url}
+        alt={data?.assets[imageId].title}
       />
     ),
-    [imageSrc, imageInfo]
+    [imageId, data]
   );
 
   return <section className="hero">{image}</section>;

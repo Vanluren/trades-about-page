@@ -11,6 +11,7 @@ type ProviderProps = {
 type State = {
   isLoading: boolean;
   data: {
+    assets: { [key: string]: any };
     city: City[];
     people: Person[];
     page: Page;

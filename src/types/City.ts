@@ -1,5 +1,7 @@
 export type City = {
-  name: string;
-  image: string;
+  city: string;
+  image: {
+    sys: { id: string };
+  };
   officeTeamMembersTitle: string;
 };

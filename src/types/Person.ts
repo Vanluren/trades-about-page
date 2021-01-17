@@ -2,7 +2,7 @@ export type Person = {
   name: string;
   title: string;
   office: 'London' | 'Berlin';
-  mugshot: string;
-  biography: string;
+  mugshot: { sys: { id: string } };
+  biography: any;
   order: number;
 };
